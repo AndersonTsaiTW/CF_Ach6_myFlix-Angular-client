@@ -4,10 +4,12 @@
     <mat-card-title>Sign Up!</mat-card-title>
   </mat-card-header>
   <mat-card-content>
+    <p>Test Content</p>
+    <!-- 測試文本 -->
     <form>
       <mat-form-field>
         <input
-          matinput
+          matInput
           [(ngModel)]="userData.Username"
           placeholder="Username"
           type="text"
@@ -17,7 +19,7 @@
       </mat-form-field>
       <mat-form-field>
         <input
-          matinput
+          matInput
           [(ngModel)]="userData.Password"
           type="password"
           placeholder="Password"
@@ -27,7 +29,7 @@
       </mat-form-field>
       <mat-form-field>
         <input
-          matinput
+          matInput
           [(ngModel)]="userData.Email"
           type="email"
           placeholder="Email"
@@ -37,7 +39,7 @@
       </mat-form-field>
       <mat-form-field>
         <input
-          matinput
+          matInput
           [(ngModel)]="userData.Birthday"
           type="date"
           placeholder="Birthday"

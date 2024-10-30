@@ -1,13 +1,9 @@
 import { NgModule } from '@angular/core';
-import {
-  BrowserModule,
-  provideClientHydration,
-} from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +14,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { UserRegistrationFormComponent } from './user-registration-form/user-registration-form.component';
+
+import { FetchApiDataService } from './fetch-api-data.service';
 
 @NgModule({
   declarations: [AppComponent, UserRegistrationFormComponent],
@@ -34,7 +32,7 @@ import { UserRegistrationFormComponent } from './user-registration-form/user-reg
     MatSnackBarModule,
     FormsModule,
   ],
-  providers: [provideClientHydration(), provideAnimationsAsync()],
+  providers: [FetchApiDataService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
