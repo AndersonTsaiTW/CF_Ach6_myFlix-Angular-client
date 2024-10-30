@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
 //Declaring the api url that will provide data for the client app
 const apiUrl = 'https://andersonmovie-fda719d938ac.herokuapp.com/';
 
-export class UserRegistrationService {
+export class FetchApiDataService {
   // Inject the HttpClient module to the constructor params
   // This will provide HttpClient to the entire class, making it available via this.http
   constructor(private http: HttpClient) {}
