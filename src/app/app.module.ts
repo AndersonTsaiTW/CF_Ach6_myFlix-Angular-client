@@ -32,7 +32,7 @@ import { FetchApiDataService } from './fetch-api-data.service';
     MatSnackBarModule,
     FormsModule,
   ],
-  providers: [FetchApiDataService],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

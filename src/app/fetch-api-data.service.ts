@@ -9,9 +9,11 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-//Declaring the api url that will provide data for the client app
+// Declaring the api url that will provide data for the client app
 const apiUrl = 'https://andersonmovie-fda719d938ac.herokuapp.com/';
 
+// using @Injectable to tell Angular
+// that this service will be available everywhere(hence the root)
 @Injectable({
   providedIn: 'root',
 })
