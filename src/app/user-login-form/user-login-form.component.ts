@@ -37,9 +37,13 @@ export class UserLoginFormComponent implements OnInit {
         });
       },
       (result) => {
-        this.snackBar.open(result, 'OK', {
-          duration: 2000,
-        });
+        this.snackBar.open(
+          'Login failed! Please check your input or register first.',
+          'OK',
+          {
+            duration: 2000,
+          }
+        );
       }
     );
   }
