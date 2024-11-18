@@ -1,6 +1,11 @@
+// src/app/app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  HttpClientModule,
+  provideHttpClient,
+  withFetch,
+} from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,11 +27,13 @@ import { FetchApiDataService } from './fetch-api-data.service';
 import { UserLoginFormComponent } from './user-login-form/user-login-form.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const appRoutes: Routes = [
   { path: 'welcome', component: WelcomePageComponent },
   { path: 'movies', component: MovieCardComponent },
-  { path: '', redirectTo: 'welcome', pathMatch: 'prefix' },
+  { path: 'profile', component: UserProfileComponent },
+  { path: '', redirectTo: '/welcome', pathMatch: 'full' },
 ];
 @NgModule({
   declarations: [
@@ -35,6 +42,7 @@ const appRoutes: Routes = [
     UserLoginFormComponent,
     MovieCardComponent,
     WelcomePageComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +59,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     MatIconModule,
   ],
-  providers: [],
+  providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

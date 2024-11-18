@@ -23,12 +23,11 @@ export class FetchApiDataService {
   constructor(private http: HttpClient) {}
 
   private handleError(error: HttpErrorResponse): any {
+    console.error('Full error details:', error);
     if (error.error instanceof ErrorEvent) {
-      console.error('Some error occurred:', error.error.message);
+      console.error('Client-side error:', error.error.message);
     } else {
-      console.error(
-        `Error Status code ${error.status}, ` + `Error body is: ${error.error}`
-      );
+      console.error(`Server-side error: ${error.status}, Body: ${error.error}`);
     }
     return throwError('Something bad happened; please try again later.');
   }
@@ -48,7 +47,8 @@ export class FetchApiDataService {
   // Method to get username from localStorage
   private getUsername(): string {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    return user.Username;
+    console.log('Extracted username:', user?.Username);
+    return user?.Username || ''; // if username is invalid, return null
   }
 
   // User registration
@@ -61,13 +61,14 @@ export class FetchApiDataService {
 
   // User login
   public userLogin(userDetails: any): Observable<any> {
+    console.log('Login payload:', userDetails);
     return this.http.post(apiUrl + 'login', userDetails).pipe(
       map((response: any) => {
         // assume response includes token
         if (response.token) {
           // store token to localStorage
           localStorage.setItem('token', response.token);
-          localStorage.setItem('user', response.user); // it will include all uer's details
+          localStorage.setItem('user', JSON.stringify(response.user)); // it will include all uer's details
         }
         return response;
       }),
@@ -114,10 +115,11 @@ export class FetchApiDataService {
   // Get user
   public getUser(): Observable<any> {
     const username = this.getUsername();
+    const headers = this.getAuthHeaders();
+    console.log('Fetching user with Token:', headers.get('Authorization'));
+
     return this.http
-      .get(apiUrl + `users/${username}`, {
-        headers: this.getAuthHeaders(),
-      })
+      .get(`${apiUrl}users/${username}`, { headers })
       .pipe(map(this.extractResponseData), catchError(this.handleError));
   }
 
