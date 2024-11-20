@@ -6,7 +6,7 @@ import {
   HttpHeaders,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // Declaring the api url that will provide data for the client app
@@ -21,6 +21,18 @@ export class FetchApiDataService {
   // Inject the HttpClient module to the constructor params
   // This will provide HttpClient to the entire class, making it available via this.http
   constructor(private http: HttpClient) {}
+
+  // feedback1: To hold the latest user data
+  private userDataSubject = new BehaviorSubject<any>(null);
+  // feedback1: Observable for components to subscribe to
+  userData$ = this.userDataSubject.asObservable();
+  // feedback1: updateUserData()
+  private updateUserData(): void {
+    this.getUser().subscribe((userData) => {
+      this.userDataSubject.next(userData); // Emit new user data
+      localStorage.setItem('user', JSON.stringify(userData)); // Optionally update localStorage
+    });
+  }
 
   private handleError(error: HttpErrorResponse): any {
     console.error('Full error details:', error);
@@ -142,7 +154,18 @@ export class FetchApiDataService {
           headers: this.getAuthHeaders(),
         }
       )
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
+      .pipe(
+        map(
+          // feedback1:
+          // below is the original code
+          // this.extractResponseData
+          (response) => {
+            this.updateUserData(); // Emit updated user data
+            return response;
+          }
+        ),
+        catchError(this.handleError)
+      );
   }
 
   // Delete a Movie from Favorite Movies
@@ -152,7 +175,18 @@ export class FetchApiDataService {
       .delete(apiUrl + `users/${username}/movies/${movieId}`, {
         headers: this.getAuthHeaders(),
       })
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
+      .pipe(
+        map(
+          // feedback1:
+          // below is the original code
+          // this.extractResponseData
+          (response) => {
+            this.updateUserData(); // Emit updated user data
+            return response;
+          }
+        ),
+        catchError(this.handleError)
+      );
   }
 
   // Edit User Info
@@ -162,7 +196,18 @@ export class FetchApiDataService {
       .put(apiUrl + `users/${username}`, userDetails, {
         headers: this.getAuthHeaders(),
       })
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
+      .pipe(
+        map(
+          // feedback1:
+          // below is the original code
+          // this.extractResponseData
+          (response) => {
+            this.updateUserData(); // Emit updated user data
+            return response;
+          }
+        ),
+        catchError(this.handleError)
+      );
   }
 
   // Delete User

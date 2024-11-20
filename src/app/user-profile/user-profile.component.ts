@@ -32,6 +32,12 @@ export class UserProfileComponent implements OnInit {
       console.error('Token is missing or invalid');
       return;
     }
+
+    // feedback1:
+    this.fetchApiData.userData$.subscribe((data) => {
+      this.userData = data; // Update local user data when changes occur
+    });
+
     this.getUser();
     this.getfavoriteMovies();
   }
