@@ -5,6 +5,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { FetchApiDataService } from '../fetch-api-data.service';
 import { MessageBoxComponent } from '../message-box/message-box.component';
 
+/**
+ * Component representing a movie card list.
+ *
+ * This component is responsible for displaying a list of movies, handling user interactions such as
+ * adding or removing favorite movies, and showing detailed information about genres, directors,
+ * and synopses.
+ */
 @Component({
   selector: 'app-movie-card',
   templateUrl: './movie-card.component.html',
@@ -14,12 +21,23 @@ export class MovieCardComponent {
   movies: any[] = [];
   favoriteMovies: any[] = [];
 
+  /**
+   * Creates an instance of the MovieCardComponent.
+   *
+   * @param fetchApiData - Service for fetching movie-related data from the API.
+   * @param router - Service for navigating between routes.
+   * @param dialog - Service for opening dialogs.
+   */
   constructor(
     public fetchApiData: FetchApiDataService,
     public router: Router,
     public dialog: MatDialog
   ) {}
 
+  /**
+   * Lifecycle hook that is called after the component has been initialized.
+   * Fetches the list of movies and the user's favorite movies.
+   */
   ngOnInit(): void {
     this.getMovies();
     this.getFavoriteMovies();
@@ -75,6 +93,13 @@ export class MovieCardComponent {
     });
   }
 
+  /**
+   * Adds or removes a movie from the user's list of favorite movies.
+   *
+   * If the movie is already a favorite, it is removed. Otherwise, it is added.
+   *
+   * @param movieId - The ID of the movie to be added or removed from favorites.
+   */
   switchFavorites(movieId: string): void {
     // check whether the movie has been stored or not
     const isFavorite = this.favoriteMovies.includes(movieId);

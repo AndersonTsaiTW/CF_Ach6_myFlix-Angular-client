@@ -6,6 +6,12 @@ import { Router } from '@angular/router';
 // This import is used to display notifications back to the user
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+/**
+ * Component representing the user's profile page.
+ *
+ * This component allows users to view and update their profile information, manage their favorite movies,
+ * and navigate back to the movie list or log out of the application.
+ */
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -16,6 +22,13 @@ export class UserProfileComponent implements OnInit {
   userData: any = {};
   favoriteMovies: any[] = [];
 
+  /**
+   * Creates an instance of the UserProfileComponent.
+   *
+   * @param fetchApiData - Service for making API calls to the backend.
+   * @param router - Service for navigating between routes.
+   * @param snackBar - Service for displaying notifications to the user.
+   */
   constructor(
     public fetchApiData: FetchApiDataService,
     public router: Router,
@@ -25,6 +38,12 @@ export class UserProfileComponent implements OnInit {
   }
 
   // initialize Component by using getUser
+  /**
+   * Lifecycle hook that initializes the component.
+   *
+   * Checks for a valid token, subscribes to user data changes, fetches the user's profile data,
+   * and retrieves their favorite movies.
+   */
   ngOnInit(): void {
     const token = localStorage.getItem('token');
     console.log('Stored Token:', token);
@@ -43,6 +62,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   // get the user data
+  /**
+   * Fetches the user's profile data from the backend and updates the `userData` object.
+   * Also stores the updated user data in localStorage.
+   */
   getUser(): void {
     this.fetchApiData.getUser().subscribe(
       (res: any) => {
@@ -66,6 +89,11 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  /**
+   * Updates the user's profile with the provided data and sends it to the backend.
+   *
+   * Displays a success or error message using a Snackbar based on the response.
+   */
   updateUser(): void {
     const updatedUser = {
       Username: this.userData.Username,
@@ -100,6 +128,11 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  /**
+   * Resets the user's profile data to the last saved state in localStorage.
+   *
+   * Displays a Snackbar to notify the user of the reset action.
+   */
   resetUser(): void {
     this.userData = JSON.parse(localStorage.getItem('user') || '');
     this.snackBar.open('Profile reset to the last saved state.', 'OK', {
@@ -111,6 +144,9 @@ export class UserProfileComponent implements OnInit {
     this.router.navigate(['movies']);
   }
 
+  /**
+   * Fetches the user's favorite movies and updates the `favoriteMovies` array with detailed movie information.
+   */
   getfavoriteMovies(): void {
     this.fetchApiData.getAllMovies().subscribe(
       (res: any) => {
@@ -124,6 +160,13 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  /**
+   * Removes a movie from the user's list of favorite movies.
+   *
+   * Updates the `favoriteMovies` array after successful removal.
+   *
+   * @param movie - The movie object to be removed from favorites.
+   */
   removeFromFavorite(movie: any): void {
     this.fetchApiData.deleteFavoriteMovie(movie._id).subscribe(
       (res: any) => {
